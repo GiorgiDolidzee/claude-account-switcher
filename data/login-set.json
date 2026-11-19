@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-11-16T07:51:27Z",
+  "claudeAppVersion": "5.11492.5",
+  "claudeCliVersion": "2.1.118, 2.1.311",
+  "app": {
+    "items": ["Cookies", "Cookies-journal", "Local Storage", "Session Storage", "IndexedDB", "WebStorage", "blob_storage"],
+    "configKeys": [
+      "bootPlaceholderColors", "bootSideSessions", "bootSidebarPlaceholder", "lastGoodMainViewLoad",
+      "lastKnownAccountUuid", "oauth:tokenCache", "oauth:tokenCacheV2", "sshTransportFlagLastAnswer",
+      "windowControlsTitleRowCenter", "windowSizeWasSignedIn"
+    ],
+    "accountIdKey": "lastKnownAccountUuid",
+    "tokenKeys": ["oauth:tokenCache", "oauth:tokenCacheV2"],
+    "loginCookie": { "hostSuffix": "claude.ai", "name": "sessionKey" }
+  },
+  "cli": {
+    "keychainService": "Claude Code-credentials",
+    "claudeJsonKeys": [
+      "additionalModelCostsCache", "additionalModelOptionsAnsweredAt", "additionalModelOptionsCache",
+      "autoCompactWindowsCache", "cachedArtifactRoster", "clientDataCacheSlots", "hasAvailableSubscription",
+      "hasCompletedOnboarding", "lastOnboardingVersion", "metricsStatusCacheByPrincipal", "modelAccessCache",
+      "oauthAccount", "orgModelDefaultCache", "subscriptionNoticeCount"
+    ],
+    "claudeHomeItems": [
+      "policy-limits.json", "policy-limits.json.signature-iat.json", "policy-limits.json.signature.json",
+      "policy-limits.json.stamp.json", "remote-settings.json", "remote-settings.json.signature-iat.json",
+      "remote-settings.json.signature.json", "remote-settings.json.synced-at"
+    ]
+  }
+}
