@@ -20,7 +20,7 @@ A small, free macOS menu-bar app that switches the **Claude desktop app** and th
 You need macOS 15 or newer and Xcode or the Command Line Tools (`xcode-select --install`).
 
 ```bash
-git clone https://github.com/<you>/claude-account-switcher.git
+git clone https://github.com/GiorgiDolidzee/claude-account-switcher.git
 cd claude-account-switcher
 ./install.sh
 ```
