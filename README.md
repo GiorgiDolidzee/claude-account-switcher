@@ -17,7 +17,23 @@ A small, free macOS menu-bar app that switches the **Claude desktop app** and th
 
 ## Install
 
-You need macOS 15 or newer and Xcode or the Command Line Tools (`xcode-select --install`).
+There are two ways. Both are free.
+
+### Option 1 — Download the app (easiest, no developer tools)
+
+1. Download **Claude-Account-Switcher-1.0.0.zip** from the [latest release](https://github.com/GiorgiDolidzee/claude-account-switcher/releases/latest).
+2. Double-click the zip to unzip it, and drag **Claude Account Switcher** into your **Applications** folder.
+3. Open it. macOS shows a message that it can't verify the app. Click **Done** (do not move it to the Trash).
+4. Open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway** next to "Claude Account Switcher". Confirm with your Mac password.
+5. Look for the two-arrows icon in the menu bar.
+
+You do step 3 and 4 only once. macOS asks because the app is free and not signed with a paid Apple developer certificate. If you prefer not to trust a downloaded app, use option 2 and build it yourself from the source code.
+
+Works on Apple Silicon and Intel Macs with macOS 15 or newer.
+
+### Option 2 — Build it yourself from source
+
+You need Apple's Command Line Tools (about 1–2 GB; full Xcode is not needed). If you don't have them, run `xcode-select --install` once.
 
 ```bash
 git clone https://github.com/GiorgiDolidzee/claude-account-switcher.git
@@ -25,7 +41,9 @@ cd claude-account-switcher
 ./install.sh
 ```
 
-`install.sh` builds the app from source, signs it for your Mac only (no Apple developer account needed), copies it to `~/Applications`, and opens it. Look for the two-arrows icon in the menu bar.
+`install.sh` builds the app, signs it for your Mac only, copies it to `~/Applications`, and opens it. No security warning appears, because the app was made on your own Mac.
+
+To update later: `git pull` and run `./install.sh` again.
 
 ## First use
 
@@ -37,6 +55,9 @@ cd claude-account-switcher
 Before the very first switch the app makes a safety copy of Claude's folder (an instant APFS clone, without the large VM image) in `~/Library/Application Support/ClaudeSwitcher/backup-…`.
 
 ## Uninstall
+
+- **Downloaded app:** quit it from the menu (power button), then move **Claude Account Switcher** from Applications to the Trash. Your saved logins stay in `~/Library/Application Support/ClaudeSwitcher`; delete that folder too if you want to remove them.
+- **Built from source:**
 
 ```bash
 ./uninstall.sh          # removes the app, keeps your saved logins
@@ -53,7 +74,7 @@ Each account's login is a small set of files and keys. When you switch, the app 
 - **Your logins never leave your Mac.** There is no network code. CLI secrets go between Keychain items through pipes only, never into files, logs or command-line arguments.
 - **It never deletes a saved login.** Anything unexpected goes to a `stray-…` folder. If the Mac crashes during a switch, the switch finishes the next time the app starts.
 - **It must quit Claude to switch.** It asks first. It also closes running `claude` sessions in Terminal (it lists them and asks).
-- The app is signed only for your Mac ("ad hoc"), so it is meant for building yourself, not for passing around as a ready-made `.app`.
+- The app is not signed with a paid Apple certificate, so macOS asks you to allow it once (see option 1). The source code is all here, so you can check it or build it yourself.
 
 ## Build and test
 
@@ -61,6 +82,7 @@ Each account's login is a small set of files and keys. When you switch, the app 
 swift test                                   # unit tests (temp folders and a fake Keychain only)
 /usr/bin/python3 -I -m unittest discover -s scripts/step0
 ./install.sh --build                         # build without installing
+./install.sh --release                       # build the download zip (Apple Silicon + Intel)
 ```
 
 ## License

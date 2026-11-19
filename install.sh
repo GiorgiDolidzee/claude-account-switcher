@@ -2,6 +2,7 @@
 # Builds Claude Account Switcher from source, signs it for this Mac only, and installs it.
 # Usage: ./install.sh            (installs to ~/Applications and opens it)
 #        ./install.sh --build    (only builds build/Claude Account Switcher.app)
+#        ./install.sh --release  (builds for Apple Silicon and Intel and makes the download .zip)
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -14,9 +15,12 @@ if ! xcrun --find swift >/dev/null 2>&1; then
   exit 1
 fi
 
+MODE="${1:-}"
+BUILD=(swift build -c release --product ClaudeSwitcher)
+[ "$MODE" = "--release" ] && BUILD+=(--arch arm64 --arch x86_64)
 echo "Building…"
-swift build -c release --product ClaudeSwitcher
-BIN="$(swift build -c release --show-bin-path)/ClaudeSwitcher"
+"${BUILD[@]}"
+BIN="$("${BUILD[@]}" --show-bin-path)/ClaudeSwitcher"
 
 echo "Making the app…"
 rm -rf "$APP" build/AppIcon.iconset
@@ -32,7 +36,15 @@ iconutil -c icns build/AppIcon.iconset -o "$APP/Contents/Resources/AppIcon.icns"
 codesign --force --deep --sign - --timestamp=none "$APP"
 echo "Built $APP"
 
-[ "${1:-}" = "--build" ] && exit 0
+[ "$MODE" = "--build" ] && exit 0
+if [ "$MODE" = "--release" ]; then
+  VERSION="$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' Resources/Info.plist)"
+  ZIP="build/Claude-Account-Switcher-$VERSION.zip"
+  rm -f "$ZIP"
+  ditto -c -k --keepParent "$APP" "$ZIP"
+  echo "Made $ZIP"
+  exit 0
+fi
 
 echo "Installing…"
 pkill -x ClaudeSwitcher 2>/dev/null || true
